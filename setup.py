@@ -1,6 +1,6 @@
 from setuptools import setup, Extension
 from setuptools.command.build_ext import build_ext
-from setuptools.disutils.errors import CompileError
+from distutils.errors import CompileError
 
 import sys
 import platform
@@ -47,7 +47,7 @@ def cpp_flag(compiler):
 class BuildExt(build_ext):
     """A custom build extension for adding compiler-specific options."""
     def build_extensions(self):
-        opts = ['-stdlib=libc++', '-mmacosx-version-min=10.7'],
+        opts = ['-stdlib=libc++', '-mmacosx-version-min=10.7']
         opts.append('-DVERSION_INFO="%s"' % self.distribution.get_version())
         opts.append(cpp_flag(self.compiler))
         if has_flag(self.compiler, '-fvisibility=hidden'):
