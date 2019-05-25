@@ -15,7 +15,8 @@
 // The io_service_t should be released with IOObjectRelease when not needed.
 // The implementation in this function is based on an open-source version
 // which is part of the GLFW library, with various fixes, found in
-// https://github.com/glfw/glfw/blob/master/src/cocoa_monitor.m
+// https://github.com/glfw/glfw/blob/master/src/cocoa_monitor.m by
+// Copyright (c) 2002-2006 Marcus Geelnard Copyright (c) 2006-2016 Camilla Löwy elmindreda@glfw.org
 io_service_t IOServicePortFromCGDisplayID(CGDirectDisplayID displayID)
 {
     const int MAX_DISPLAYS = 16;
@@ -24,8 +25,7 @@ io_service_t IOServicePortFromCGDisplayID(CGDirectDisplayID displayID)
     CGDirectDisplayID onlineDisplays[MAX_DISPLAYS];
     CGDisplayErr dErr = CGGetOnlineDisplayList(maxDisplays, onlineDisplays, &displayCount);
     if (dErr != kCGErrorSuccess) {
-        fprintf(stderr, "CGGetOnlineDisplayList: error %d.\n", dErr);
-        exit(1);
+        return 0;
     }
 
     io_iterator_t iter;
@@ -95,23 +95,20 @@ io_service_t IOServicePortFromCGDisplayID(CGDirectDisplayID displayID)
 //
 char* getDisplayName(CGDirectDisplayID displayID)
 {
-    char* name;
-    CFDictionaryRef info, names;
-    CFStringRef value;
-    CFIndex size;
-
     io_service_t serv = IOServicePortFromCGDisplayID(displayID);
     if (!serv)
     {
         return strdup("Unknown");
     }
 
-    info = IODisplayCreateInfoDictionary(serv,
+    CFDictionaryRef info = IODisplayCreateInfoDictionary(serv,
                                          kIODisplayOnlyPreferredName);
 
     IOObjectRelease(serv);
 
-    names = CFDictionaryGetValue(info, CFSTR(kDisplayProductName));
+    CFStringRef value;
+
+    CFDictionaryRef names = CFDictionaryGetValue(info, CFSTR(kDisplayProductName));
 
     if (!names || !CFDictionaryGetValueIfPresent(names, CFSTR("en_US"),
                                                  (const void**) &value))
@@ -120,9 +117,9 @@ char* getDisplayName(CGDirectDisplayID displayID)
         return strdup("Unknown");
     }
 
-    size = CFStringGetMaximumSizeForEncoding(CFStringGetLength(value),
+    CFIndex size = CFStringGetMaximumSizeForEncoding(CFStringGetLength(value),
                                              kCFStringEncodingUTF8);
-    name = calloc((size_t) (size + 1), 1);
+    char* name = calloc((size_t) (size + 1), 1);
     CFStringGetCString(value, name, size, kCFStringEncodingUTF8);
 
     CFRelease(info);

@@ -47,12 +47,12 @@ static PyObject* display_name_wrapper(PyObject* module, PyObject* arg)
 // We require this `NULL` to signal the end of our method
 // definition
 static PyMethodDef methods[] = {
-    { "display_name", display_name_wrapper, METH_O, "Gets user-visible display name" },
+    { "display_name", display_name_wrapper, METH_O, "Gets user-visible display name from display id" },
     { NULL, NULL, 0, NULL }
 };
 
 // Our Module Definition struct
-static struct PyModuleDef mac_display_module = {
+static struct PyModuleDef display_module = {
     PyModuleDef_HEAD_INIT,
     "display",
     "macOS display names",
@@ -62,8 +62,8 @@ static struct PyModuleDef mac_display_module = {
 };
 
 // Initializes our module using our above struct
-PyMODINIT_FUNC PyInit_mac_display(void)
+PyMODINIT_FUNC PyInit_display(void)
 {
-    return PyModule_Create(&mac_display_module
+    return PyModule_Create(&display_module
 );
 }
