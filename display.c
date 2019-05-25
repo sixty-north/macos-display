@@ -13,7 +13,9 @@
 
 // Returns the io_service_t corresponding to a CG display ID, or 0 on failure.
 // The io_service_t should be released with IOObjectRelease when not needed.
-//
+// The implementation in this function is based on an open-source version
+// which is part of the GLFW library, with various fixes, found in
+// https://github.com/glfw/glfw/blob/master/src/cocoa_monitor.m
 io_service_t IOServicePortFromCGDisplayID(CGDirectDisplayID displayID)
 {
     const int MAX_DISPLAYS = 16;
