@@ -1,5 +1,12 @@
 from setuptools import setup, Extension
 
+import sys
+import platform
+
+if platform.system() != 'Darwin':
+    print("The mac_display package can only be installed on macOS", file=sys.stderr)
+    sys.exit(1)
+
 setup(
     name='mac_display',
     author='rob@sixty-north.com',
@@ -25,5 +32,6 @@ setup(
         'License :: OSI Approved :: BSD License',
         'Operating System :: MacOS :: MacOS X',
         'Programming Language :: Python :: 3',
+        'License :: OSI Approved :: zlib/libpng License',
     ]
 )
