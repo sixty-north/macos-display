@@ -12,7 +12,8 @@ setup(
     author='rob@sixty-north.com',
     author_email="rob@sixty-north.com",
     description="Retrieve information about macOS displays",
-    version='1.0',
+    version='1.1',
+    url="https://github.com/sixty-north/macos-display",
     packages = ['macos_display'],
     ext_modules=[
         Extension(
