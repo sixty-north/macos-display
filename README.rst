@@ -1,6 +1,6 @@
-===========
+=============
 macos_display
-===========
+=============
 
 Fetch information about macOS displays given a display ID, which is available from
 ``nsscreen.deviceDescription()["NSScreenNumber"]`` using pyobjc.

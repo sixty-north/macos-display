@@ -18,7 +18,7 @@ setup(
     author_email="rob@sixty-north.com",
     description="Retrieve information about macOS displays",
     long_description=long_description,
-    long_description_content_type="text/x-rst",
+    long_description_content_type='text/x-rst',
     version='1.1.1',
     url="https://github.com/sixty-north/macos-display",
     packages = ['macos_display'],
