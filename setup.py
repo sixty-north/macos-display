@@ -5,6 +5,21 @@ from distutils.errors import CompileError
 import sys
 import platform
 
+
+class get_pybind_include:
+    """Helper class to determine the pybind11 include path
+    The purpose of this class is to postpone importing pybind11
+    until it is actually installed, so that the ``get_include()``
+    method can be invoked. """
+
+    def __init__(self, user=False):
+        self.user = user
+
+    def __str__(self):
+        import pybind11
+        return pybind11.get_include(self.user)
+
+
 if platform.system() != 'Darwin':
     print("The macos_display package can only be installed on macOS", file=sys.stderr)
     sys.exit(1)
@@ -62,14 +77,14 @@ ext_modules = [
         'macos_display.display',
         ['macos_display/display_module.cpp', 
          'macos_display/display.cpp'],
-        include_dirs=[
-            # Path to pybind11 headers
-            'include',
-        ],
         extra_link_args=[
             '-framework', 'IOKit',
             '-framework', 'CoreFoundation',
             '-framework', 'ApplicationServices'
+        ],
+        include_dirs=[
+            get_pybind_include(),
+            get_pybind_include(user=True)
         ],
         language='c++'
     ),
@@ -87,6 +102,9 @@ setup(
     packages=['macos_display'],
     ext_modules=ext_modules,
     cmdclass={'build_ext': BuildExt},
+    install_requires=[
+        'pybind11'
+    ],
     classifiers=[
         'Development Status :: 3 - Alpha',
         'Intended Audience :: Developers',
