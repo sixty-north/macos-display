@@ -27,7 +27,7 @@ static PyObject* display_name_wrapper(PyObject* module, PyObject* arg)
     unsigned long x = PyLong_AsUnsignedLong(lx);
     Py_DECREF(lx);
     static unsigned long MAX = 0xffffffff;
-    if (x == (((unsigned long) -1) && PyErr_Occurred()) || x > MAX) {
+    if (((x == ((unsigned long) -1)) && PyErr_Occurred()) || x > MAX) {
         PyErr_SetString(PyExc_OverflowError, "Can't convert to uint32_t");
         return NULL;
     }
