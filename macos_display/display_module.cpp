@@ -2,11 +2,16 @@
 
 #include <Python.h>
 #include <pybind11/pybind11.h>
+
 #include <string>
+#include <cstdlib>
+
 #include "display.h"
 
 std::string display_name_wrapper(int x) {
-    return getDisplayName((uint32_t) x);
+    char* c = getDisplayName((uint32_t) x);
+    std::string s{c};
+    free(c);
 }
 
 PYBIND11_MODULE(display, m) {

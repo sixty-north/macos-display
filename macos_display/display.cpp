@@ -124,6 +124,9 @@ char *getDisplayName(CGDirectDisplayID displayID)
     CFIndex size = CFStringGetMaximumSizeForEncoding(CFStringGetLength(value),
                                                      kCFStringEncodingUTF8);
     char *name = static_cast<char *>(calloc((size_t)(size + 1), 1));
+    if (!name) {
+        return strdup("Allocation failed!")
+    }
     CFStringGetCString(value, name, size, kCFStringEncodingUTF8);
 
     CFRelease(info);
