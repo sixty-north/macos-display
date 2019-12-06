@@ -133,3 +133,9 @@ char *getDisplayName(CGDirectDisplayID displayID)
 
     return name;
 }
+
+unsigned int getDisplayMode(CGDirectDisplayID displayID) {
+    CGDisplayModeRef currentMode = CGDisplayCopyDisplayMode(displayID);
+    
+    return 0;
+}
