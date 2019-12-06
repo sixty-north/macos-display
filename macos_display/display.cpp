@@ -9,6 +9,21 @@
 #include <CoreVideo/CVDisplayLink.h>
 #include <ApplicationServices/ApplicationServices.h>
 
+#include <string>
+#include <vector>
+
+char* modeToCString(CGDisplayModeRef mode) {
+    size_t width = CGDisplayModeGetWidth(mode);
+    size_t height = CGDisplayModeGetHeight(mode);
+    size_t buffer_size = 16;
+    char* resolution = static_cast<char *>(calloc((size_t)(buffer_size), 1));
+    if (!resolution) {
+        return strdup("Allocation failed!");
+    }
+    snprintf(resolution, buffer_size, "%zux%zu", width, height);
+    return resolution;
+}
+
 // Returns the io_service_t corresponding to a CG display ID, or 0 on failure.
 // The io_service_t should be released with IOObjectRelease when not needed.
 // The implementation in this function is based on an open-source version
@@ -135,14 +150,24 @@ char *getDisplayName(CGDirectDisplayID displayID)
 }
 
 char* getDisplayMode(CGDirectDisplayID displayID) {
-    CGDisplayModeRef currentMode = CGDisplayCopyDisplayMode(displayID);
-    size_t width = CGDisplayModeGetWidth(currentMode);
-    size_t height = CGDisplayModeGetHeight(currentMode);
-    size_t buffer_size = 16;
-    char* resolution = static_cast<char *>(calloc((size_t)(buffer_size), 1));
-        if (!resolution) {
-        return strdup("Allocation failed!");
+    CGDisplayModeRef mode = CGDisplayCopyDisplayMode(displayID);
+    return modeToCString(mode);
+}
+
+char* getAvailableDisplayModes(CGDirectDisplayID displayID, std::vector<std::string> & result) {
+    CFArrayRef modes = CGDisplayCopyAllDisplayModes(displayID, NULL);
+    if (!modes) {
+        return strdup("Could not retrieve display modes");
     }
-    snprintf(resolution, buffer_size, "%zux%zu", width, height);
-    return resolution;
+
+    int num_modes = CFArrayGetCount(modes);
+    for (int i = 0; i < num_modes; ++i) {
+        CGDisplayModeRef mode = (CGDisplayModeRef) CFArrayGetValueAtIndex(modes, i);
+        char* s = modeToCString(mode);
+        result.push_back(std::string{s});
+        free(s);
+    }
+    
+    CFRelease(modes);
+    return 0;
 }
