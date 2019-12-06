@@ -9,7 +9,7 @@
 
 char* getDisplayName(CGDirectDisplayID displayID);
 
-unsigned int getDisplayMode(CGDirectDisplayID displayID);
+char* getDisplayMode(CGDirectDisplayID displayID);
 
 //
 #endif //MAC_DISPLAYS_DISPLAYS_H

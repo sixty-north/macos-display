@@ -125,17 +125,24 @@ char *getDisplayName(CGDirectDisplayID displayID)
                                                      kCFStringEncodingUTF8);
     char *name = static_cast<char *>(calloc((size_t)(size + 1), 1));
     if (!name) {
-        return strdup("Allocation failed!")
+        return strdup("Allocation failed!");
     }
-    CFStringGetCString(value, name, size, kCFStringEncodingUTF8);
+    CFStringGetCString(value, name, size, kCFStringEncodingUTF8); // TODO << Is this used?
 
     CFRelease(info);
 
     return name;
 }
 
-unsigned int getDisplayMode(CGDirectDisplayID displayID) {
+char* getDisplayMode(CGDirectDisplayID displayID) {
     CGDisplayModeRef currentMode = CGDisplayCopyDisplayMode(displayID);
-    
-    return 0;
+    size_t width = CGDisplayModeGetWidth(currentMode);
+    size_t height = CGDisplayModeGetHeight(currentMode);
+    size_t buffer_size = 16;
+    char* resolution = static_cast<char *>(calloc((size_t)(buffer_size), 1));
+        if (!resolution) {
+        return strdup("Allocation failed!");
+    }
+    snprintf(resolution, buffer_size, "%zux%zu", width, height);
+    return resolution;
 }
