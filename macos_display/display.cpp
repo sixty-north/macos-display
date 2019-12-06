@@ -9,8 +9,6 @@
 #include <CoreVideo/CVDisplayLink.h>
 #include <ApplicationServices/ApplicationServices.h>
 
-
-
 // Returns the io_service_t corresponding to a CG display ID, or 0 on failure.
 // The io_service_t should be released with IOObjectRelease when not needed.
 // The implementation in this function is based on an open-source version
@@ -20,11 +18,12 @@
 io_service_t IOServicePortFromCGDisplayID(CGDirectDisplayID displayID)
 {
     const int MAX_DISPLAYS = 16;
-    CGDisplayCount    displayCount;
-    CGDisplayCount    maxDisplays = MAX_DISPLAYS;
+    CGDisplayCount displayCount;
+    CGDisplayCount maxDisplays = MAX_DISPLAYS;
     CGDirectDisplayID onlineDisplays[MAX_DISPLAYS];
     CGDisplayErr dErr = CGGetOnlineDisplayList(maxDisplays, onlineDisplays, &displayCount);
-    if (dErr != kCGErrorSuccess) {
+    if (dErr != kCGErrorSuccess)
+    {
         return 0;
     }
 
@@ -52,20 +51,24 @@ io_service_t IOServicePortFromCGDisplayID(CGDirectDisplayID displayID)
         info = IODisplayCreateInfoDictionary(serv,
                                              kIODisplayOnlyPreferredName);
 
-        vendorIDRef = CFDictionaryGetValue(info,
-                                           CFSTR(kDisplayVendorID));
-        productIDRef = CFDictionaryGetValue(info,
-                                            CFSTR(kDisplayProductID));
-        serialIDRef = CFDictionaryGetValue(info,
-                                           CFSTR(kDisplaySerialNumber));
+        vendorIDRef = static_cast<CFNumberRef>(
+            CFDictionaryGetValue(info,
+                                 CFSTR(kDisplayVendorID)));
+        productIDRef = static_cast<CFNumberRef>(
+            CFDictionaryGetValue(info,
+                                 CFSTR(kDisplayProductID)));
+        serialIDRef = static_cast<CFNumberRef>(
+            CFDictionaryGetValue(info,
+                                 CFSTR(kDisplaySerialNumber)));
 
         success = CFNumberGetValue(vendorIDRef, kCFNumberCFIndexType,
                                    &vendorID);
         success &= CFNumberGetValue(productIDRef, kCFNumberCFIndexType,
                                     &productID);
-        if (serialIDRef != 0) {
+        if (serialIDRef != 0)
+        {
             success &= CFNumberGetValue(serialIDRef, kCFNumberCFIndexType,
-                                    &serialID);
+                                        &serialID);
         }
 
         if (!success)
@@ -93,7 +96,7 @@ io_service_t IOServicePortFromCGDisplayID(CGDirectDisplayID displayID)
 
 // Get the name of the specified display
 //
-char* getDisplayName(CGDirectDisplayID displayID)
+char *getDisplayName(CGDirectDisplayID displayID)
 {
     io_service_t serv = IOServicePortFromCGDisplayID(displayID);
     if (!serv)
@@ -102,24 +105,25 @@ char* getDisplayName(CGDirectDisplayID displayID)
     }
 
     CFDictionaryRef info = IODisplayCreateInfoDictionary(serv,
-                                         kIODisplayOnlyPreferredName);
+                                                         kIODisplayOnlyPreferredName);
 
     IOObjectRelease(serv);
 
     CFStringRef value;
 
-    CFDictionaryRef names = CFDictionaryGetValue(info, CFSTR(kDisplayProductName));
+    CFDictionaryRef names = static_cast<CFDictionaryRef>(
+        CFDictionaryGetValue(info, CFSTR(kDisplayProductName)));
 
     if (!names || !CFDictionaryGetValueIfPresent(names, CFSTR("en_US"),
-                                                 (const void**) &value))
+                                                 (const void **)&value))
     {
         CFRelease(info);
         return strdup("Unknown");
     }
 
     CFIndex size = CFStringGetMaximumSizeForEncoding(CFStringGetLength(value),
-                                             kCFStringEncodingUTF8);
-    char* name = calloc((size_t) (size + 1), 1);
+                                                     kCFStringEncodingUTF8);
+    char *name = static_cast<char *>(calloc((size_t)(size + 1), 1));
     CFStringGetCString(value, name, size, kCFStringEncodingUTF8);
 
     CFRelease(info);
