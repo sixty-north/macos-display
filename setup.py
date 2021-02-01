@@ -106,7 +106,7 @@ setup(
         'pybind11',  # This is needed if users have to build from source
     ],
     extras_require={
-        'dev': ['pybind11'],
+        'dev': ['bump2version', 'pybind11'],
     },
     classifiers=[
         'Development Status :: 3 - Alpha',
