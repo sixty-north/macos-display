@@ -7,5 +7,5 @@ pipelines:
           name: Build and upload package
           script:
             - pip install twine
-            - python setup.py bdist_wheel
+            - python setup.py sdist
             - twine upload -u $PYPI_USER -p $PYPI_PASSWORD dist/*
