@@ -102,7 +102,9 @@ setup(
     packages=['macos_display'],
     ext_modules=ext_modules,
     cmdclass={'build_ext': BuildExt},
-    install_requires=[],
+    install_requires=[
+        'pybind11',  # This is needed if users have to build from source
+    ],
     extras_require={
         'dev': ['pybind11'],
     },
