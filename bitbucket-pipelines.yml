@@ -8,4 +8,4 @@ pipelines:
           script:
             - pip install twine
             - python setup.py bdist_wheel
-            - twine upload dist/*
+            - twine upload -u $PYPI_USER -p $PYPI_PASSWORD dist/*
