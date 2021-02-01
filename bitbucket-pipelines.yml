@@ -1,11 +1,14 @@
-image: python:3.8
+# NB: Currently disabled because this package only makes sense on macos and
+# bitbucket doesn't support macos builds.
 
-pipelines:
-  tags:
-    release/*:
-      - step:
-          name: Build and upload package
-          script:
-            - pip install twine
-            - python setup.py sdist
-            - twine upload -u $PYPI_USER -p $PYPI_PASSWORD dist/*
+# image: python:3.8
+
+# pipelines:
+#   tags:
+#     release/*:
+#       - step:
+#           name: Build and upload package
+#           script:
+#             - pip install twine
+#             - python setup.py sdist
+#             - twine upload -u $PYPI_USER -p $PYPI_PASSWORD dist/*
