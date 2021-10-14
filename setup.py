@@ -80,13 +80,16 @@ ext_modules = [
         extra_link_args=[
             '-framework', 'IOKit',
             '-framework', 'CoreFoundation',
-            '-framework', 'ApplicationServices'
+            '-framework', 'ApplicationServices',
         ],
         include_dirs=[
             get_pybind_include(),
             get_pybind_include(user=True),
         ],
-        language='c++'
+        language='c++',
+        depends=[
+            'macos_display/display.h',
+        ]
     ),
 ]
 
