@@ -167,7 +167,7 @@ char* getAvailableDisplayModes(CGDirectDisplayID displayID, std::vector<std::str
         result.push_back(std::string{s});
         free(s);
     }
-    
+
     CFRelease(modes);
     return 0;
 }

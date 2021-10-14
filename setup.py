@@ -75,7 +75,7 @@ class BuildExt(build_ext):
 ext_modules = [
     Extension(
         'macos_display.display',
-        ['macos_display/display_module.cpp', 
+        ['macos_display/display_module.cpp',
          'macos_display/display.cpp'],
         extra_link_args=[
             '-framework', 'IOKit',
@@ -84,7 +84,7 @@ ext_modules = [
         ],
         include_dirs=[
             get_pybind_include(),
-            get_pybind_include(user=True)
+            get_pybind_include(user=True),
         ],
         language='c++'
     ),
