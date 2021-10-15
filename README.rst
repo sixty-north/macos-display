@@ -2,6 +2,10 @@
 macos_display
 =============
 
+.. image:: https://github.com/sixty-north/macos-display/workflows/CI/badge.svg?branch=master
+     :target: https://github.com/sixty-north/macos-display/actions?workflow=CI
+     :alt: CI Status
+
 Fetch information about macOS displays given a display ID, which is available from
 ``nsscreen.deviceDescription()["NSScreenNumber"]`` using pyobjc.
 
@@ -20,7 +24,7 @@ List all display names::
   ...     screen_id = screen.deviceDescription()["NSScreenNumber"]
   ...     name = macos_display.display_name(screen_id)
   ...     print(name)
-  ... 
+  ...
   Color LCD
   SAMSUNG
   LCD1970NXp
