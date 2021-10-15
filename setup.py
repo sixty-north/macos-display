@@ -100,7 +100,7 @@ setup(
     description="Retrieve information about macOS displays",
     long_description=long_description,
     long_description_content_type='text/x-rst',
-    version='1.1.5',
+    version='1.1.6',
     url="https://github.com/sixty-north/macos-display",
     packages=['macos_display'],
     ext_modules=ext_modules,
