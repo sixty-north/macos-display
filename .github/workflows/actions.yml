@@ -12,7 +12,10 @@ on:
 jobs:
   package:
     name: "Build Package Distributions"
-    runs-on: macos-10.15
+    strategy:
+      matrix:
+        os: [ macos-10.15, macos-11 ]
+    runs-on: ${{ matrix.os }}
     steps:
       - uses: "actions/checkout@v2"
       - uses: "actions/setup-python@v2"
