@@ -1,1 +1,1 @@
-include source/macos_display/*.h
+include macos_display/*.h
